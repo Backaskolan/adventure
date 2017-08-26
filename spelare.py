@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # coding: utf-8
 import saker, karta
 
@@ -43,7 +42,7 @@ class Spelare():
                     self.saker.append(saker.FicklampaMedBatteri())
         elif sak.namn == "Ficklampa med batteri" and self.tidigare_position == (1, 2):
             sak.anvandning = "Du tänder ficklampan och låter strålen lysa upp den mörka skogen."
-            # Ändra beskrivning på det mörka rummet!
+            karta.rum_finns(1, 2).beskrivning_txt = """Du lyser med ficklampan genom mörkret och ser en stig som leder västerut."""
             karta._karta[(0, 2)] = getattr(__import__('rum'), 'SlutRum')(0, 2)
         print("""{}""".format(sak.anvandning))
 

@@ -74,11 +74,15 @@ class HittaSakRum(Rum):
             return mojliga_handlingar
 
 class MorktRum(Rum):
-    def beskrivning(self):
-        return """
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.beskrivning_txt = """
         Här är skogen tät och mörk. Du vågar inte gå vidare.
         Den vackra gläntan ligger norrut.
         """
+
+    def beskrivning(self):
+        return self.beskrivning_txt
     def modifiera_spelare(self, spelare):
         pass
 
