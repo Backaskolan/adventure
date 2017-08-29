@@ -1,5 +1,5 @@
 # coding: utf-8
-import saker, karta
+import saker, karta, rum
 
 class Spelare():
     def __init__(self):
@@ -16,18 +16,17 @@ class Spelare():
     def plocka_upp(self, sak):
         self.saker.append(sak)
         sak.upplockad = True
-        print("""
-            Plockade upp {}""".format(sak.namn))
+        print(rum.clear_screen + '\n| Plockade upp {}'.format(sak.namn))
 
     def visa_saker(self):
-        if len(self.saker) == 0:
-            print("Du har inga saker.")
-        else:
-            # for sak in self.saker:
-            #     print(sak, '\n')
-            self.tidigare_position = (self.position_x, self.position_y)
-            self.position_x = 3
-            self.position_y = 0
+        # if len(self.saker) == 0:
+        #     print("Du har inga saker.")
+        # else:
+        #     # for sak in self.saker:
+        #     #     print(sak, '\n')
+        self.tidigare_position = (self.position_x, self.position_y)
+        self.position_x = 3
+        self.position_y = 0
 
     def tillbaka(self):
         self.position_x = self.tidigare_position[0]
@@ -41,9 +40,9 @@ class Spelare():
                     self.saker.clear()
                     self.saker.append(saker.FicklampaMedBatteri())
         elif sak.namn == "Ficklampa med batteri" and self.tidigare_position == (1, 2):
-            sak.anvandning = "Du tänder ficklampan och låter strålen lysa upp den mörka skogen."
-            karta.rum_finns(1, 2).beskrivning_txt = """Du lyser med ficklampan genom mörkret och ser en stig som leder västerut."""
-            karta._karta[(0, 2)] = getattr(__import__('rum'), 'SlutRum')(0, 2)
+            sak.anvandning = "\n| Du tänder ficklampan och låter strålen lysa upp den mörka skogen."
+            karta.rum_finns(1, 2).beskrivning_text = rum.clear_screen + '\n| MÖRKA SKOGEN' '\n| Du lyser med ficklampan genom mörkret och ser en stig som leder västerut.\n'
+            karta._karta[(0, 2)] = rum.SlutRum(0, 2)
         print("""{}""".format(sak.anvandning))
 
     def flytta(self, dx, dy):
@@ -64,5 +63,5 @@ class Spelare():
         self.flytta(dx=-1, dy=0)
 
     def avsluta(self):
-        print("Tack för att du spelade!")
+        print("\n| Tack för att du spelade!")
         exit()

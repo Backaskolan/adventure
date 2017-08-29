@@ -5,7 +5,7 @@ class Sak:
         self.beskrivning = beskrivning
 
     def __str__(self):
-        return """{}:\n {}""".format(self.namn, self.beskrivning)
+        return "{}:\n {}".format(self.namn, self.beskrivning)
 
 class Inventarie(Sak):
     def __init__(self, namn, beskrivning, anvandning, upplockad):

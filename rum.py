@@ -1,5 +1,6 @@
 # coding: utf-8
 import saker, handlingar, karta
+clear_screen = "\033[H\033[J"
 
 class Rum:
     def __init__(self, x, y):
@@ -32,14 +33,24 @@ class Rum:
         return mojliga_handlingar
 
 class AnvandRum(Rum):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.beskrivning_text = clear_screen + '\n| Saker att använda:\n'
+        super().__init__(x, y)
+
     def beskrivning(self):
-        return "Vad vill du använda?"
+        return self.beskrivning_text
 
     def mojliga_handlingar(self, spelare):
         mojliga_anvandningar = []
-        for sak in spelare.saker:
-            if sak.upplockad:
-                mojliga_anvandningar.append(handlingar.Anvand(sak))
+        if len(spelare.saker) == 0:
+            print('(Du har inga saker.)\n')
+        else:
+            for sak in spelare.saker:
+                if sak.upplockad:
+                    mojliga_anvandningar.append(handlingar.Anvand(sak))
+        
         mojliga_anvandningar.append(handlingar.Tillbaka(spelare.tidigare_position))
         return mojliga_anvandningar
 
@@ -47,11 +58,14 @@ class AnvandRum(Rum):
         pass
 
 class StartRum(Rum):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.beskrivning_text = clear_screen + '\n| GLÄNTA' '\n| En vacker glänta mitt i skogen.' '\n| Fåglar sjunger och solen strålar genom löven.\n'
+        super().__init__(x, y)
+    
     def beskrivning(self):
-        return """
-        En vacker glänta i skogen. 
-        Härifrån går det stigar till norr, öster och söder.
-        """
+        return self.beskrivning_text
 
     def modifiera_spelare(self, spelare):
         #Här händer inget med spelaren
@@ -76,25 +90,21 @@ class HittaSakRum(Rum):
 class MorktRum(Rum):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.beskrivning_txt = """
-        Här är skogen tät och mörk. Du vågar inte gå vidare.
-        Den vackra gläntan ligger norrut.
-        """
+        self.beskrivning_text = clear_screen +'\n| MÖRKA SKOGEN' '\n| Här är skogen tät och mörk. Du vågar inte gå vidare.\n'
 
     def beskrivning(self):
-        return self.beskrivning_txt
+        return self.beskrivning_text
     def modifiera_spelare(self, spelare):
         pass
 
 
 class SlutRum(Rum):
     def __init__(self, x, y):
+        self.beskrivning_text = clear_screen + '\n| HEMMA!' '\n| Skogen öppnar sig och du kliver ut i din egen bakgård.\n'
         super().__init__(x, y)
 
     def beskrivning(self):
-        return """
-        Skogen öppnar sig och du kliver ut i din egen bakgård. Äntligen hemma!
-        """
+        return self.beskrivning_text
 
     def modifiera_spelare(self, spelare):
         spelare.hemma = True
@@ -105,14 +115,10 @@ class FicklampaRum(HittaSakRum):
 
     def beskrivning(self):
         if not self.sak.upplockad:
-            return """
-            En bit in i skogen ligger en gammal FICKLAMPA vid en sten.
-            En stig leder söderut.
-            """
+            self.beskrivning_text = clear_screen + '\n| SKOGEN' '\n| En bit in i skogen ligger en gammal FICKLAMPA vid en sten.\n'
         else:
-            return """
-                En sten mitt i skogen. En stig leder söderut.
-            """            
+            self.beskrivning_text = clear_screen + '\n| SKOGEN' '\n| En sten mitt i skogen.\n'
+        return self.beskrivning_text
 
 class BatteriRum(HittaSakRum):
     def __init__(self, x, y):
@@ -120,12 +126,6 @@ class BatteriRum(HittaSakRum):
 
     def beskrivning(self):
         if not self.sak.upplockad:    
-            return """
-            Mitt i skogen växer ett stort gammalt träd. I trädets bark sitter det ett BATTERI.
-            Stigen leder västerut tillbaka till gläntan.
-            """
+            return clear_screen + '\n| SKOGEN' '\n| Mitt i skogen växer ett stort gammalt träd.' '\n| I trädets bark sitter det ett BATTERI.\n'
         else:
-            return """
-                Mitt i skogen växer ett stort gammalt träd. Det ser ut som det suttit något i barken nyligen.
-                Stigen leder västerut tillbaka till gläntan.
-            """
+            return clear_screen + '\n| SKOGEN' '\n| Mitt i skogen växer ett stort gammalt träd.' '\n| Det ser ut som det suttit något i barken nyligen.\n'

@@ -1,4 +1,5 @@
 # coding: utf-8
+import rum
 _karta = {}
 startposition = (0, 0)
 
@@ -15,7 +16,7 @@ def ladda_rum():
             if rumnamn == 'StartRum':
                 global startposition
                 startposition = (x, y)
-            _karta[(x, y)] = None if rumnamn == '' or rumnamn == 'SlutRum' else getattr(__import__('rum'), rumnamn)(x, y)
+            _karta[(x, y)] = None if rumnamn == '' or rumnamn == 'SlutRum' else getattr(rum, rumnamn)(x, y)
 
 def rum_finns(x, y):
     return _karta.get((x, y))
